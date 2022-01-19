@@ -59,9 +59,23 @@ const handleLoanButtonClick = e => {
     }
 }
 
+const handleBankButtonClick = e => {
+    // Transfere salary to bank balance. If you have an outstanding loan, 10% must go to paying off the loan, the rest goes to bank balance
+    
+}
+
+const handleWorkButtonClick = e => {
+    // Get paid (100)
+    payBalance += 100;
+    payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(payBalance);
+
+}
+
 
 // Event liteners
 loanButtonElement.addEventListener("click", handleLoanButtonClick);
+bankButtonElement.addEventListener("click", handleBankButtonClick);
+workButtonElement.addEventListener("click", handleWorkButtonClick);
 
 
 
