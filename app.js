@@ -11,7 +11,7 @@ const workButtonElement = document.getElementById("work");
 
 // IIFE Object
 const joesBankAccountObj = (function(){
-    let balance = 10;
+    let balance = 0;
     let loan = 0;
 
     return {
@@ -55,6 +55,10 @@ const joesWorkObj = (function(){
         getPayed() {
             payBalance += salary;
             payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
+        },
+        transferedPayBalance() {
+            payBalance = 0;
+            payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
         }
     }
 })();
@@ -89,11 +93,15 @@ const handleBankButtonClick = e => {
     // Transfere work salary to bank balance. If you have an outstanding loan, 10% must go to paying off the loan, the rest goes to bank balance
     let balance = joesBankAccountObj.getBalance();
     let loan = joesBankAccountObj.getLoan();
+    let payBalance = joesWorkObj.getPayBalance();
 
     if (loan === 0) {
-        joesBankAccountObj.payJoe(joesWorkObj.getPayBalance())
+        joesBankAccountObj.payJoe(payBalance)
+        joesWorkObj.transferedPayBalance();
     } else {
-        joesBankAccountObj.payOffLoan(joesWorkObj.getPayBalance())
+        joesBankAccountObj.payOffLoan(payBalance)
+        joesWorkObj.transferedPayBalance();
+
     }
 }
 
