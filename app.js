@@ -80,7 +80,12 @@ const handleLoanButtonClick = e => {
                 alert(`Loan have to be beween 0-${maxLoanValue}.`);
                 handleLoanButtonClick();
             } else {
-                joesBankAccountObj.setLoan(loanAmount);
+                if (Number.isInteger(loanAmount)) {
+                    joesBankAccountObj.setLoan(loanAmount);
+                } else {
+                    alert("Only enter digits.");
+                    handleLoanButtonClick();
+                }
             }
         } else {
             alert("You already have a loan, and need to pay it off before you can get a new one");   
