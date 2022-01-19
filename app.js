@@ -2,9 +2,12 @@
 const bankBalanceElement = document.getElementById("bankBalance");
 const loanBalanceElement = document.getElementById("loanBalance");
 const loanButtonElement = document.getElementById("getLoan");
+const payBalanceElement = document.getElementById("payBalance");
+const bankButtonElement = document.getElementById("bankPayBalance");
+const workButtonElement = document.getElementById("work");
 
 // Variables
-
+let payBalance = 0;
 
 // IIFE Object
 const joesBankAccountObj = (function(){
@@ -65,3 +68,4 @@ loanButtonElement.addEventListener("click", handleLoanButtonClick);
 // Set default values
 bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getBalance());
 loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getLoan());
+payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(payBalance);
