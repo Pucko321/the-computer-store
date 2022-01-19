@@ -29,6 +29,14 @@ const joesBankAccountObj = (function(){
             loan = loanAmount;
             bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(balance);
             loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
+        },
+        payJoe(payBalance) {
+            balance += payBalance;
+            bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(balance);
+        },
+        payOffLoan(owedMoney) {
+            loan -= owedMoney;
+            loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
         }
     }
 })();
@@ -60,8 +68,15 @@ const handleLoanButtonClick = e => {
 }
 
 const handleBankButtonClick = e => {
-    // Transfere salary to bank balance. If you have an outstanding loan, 10% must go to paying off the loan, the rest goes to bank balance
-    
+    // Transfere work salary to bank balance. If you have an outstanding loan, 10% must go to paying off the loan, the rest goes to bank balance
+    let balance = joesBankAccountObj.getBalance();
+    let loan = joesBankAccountObj.getLoan();
+
+    if (loan === 0) {
+        joesBankAccountObj.payJoe(payBalance)
+    } else {
+        joesBankAccountObj.payOffLoan(payBalance)
+    }
 }
 
 const handleWorkButtonClick = e => {
