@@ -2,13 +2,16 @@
 const bankBalanceElement = document.getElementById("bankBalance");
 const loanBalanceElement = document.getElementById("loanBalance");
 const loanButtonElement = document.getElementById("getLoan");
+const payBalanceElement = document.getElementById("payBalance");
+const bankButtonElement = document.getElementById("bankPayBalance");
+const workButtonElement = document.getElementById("work");
 
 // Variables
 
 
 // IIFE Object
 const joesBankAccountObj = (function(){
-    let balance = 10;
+    let balance = 0;
     let loan = 0;
 
     return {
@@ -26,6 +29,37 @@ const joesBankAccountObj = (function(){
             loan = loanAmount;
             bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(balance);
             loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
+        },
+        payJoe(payBalance) {
+            balance += payBalance;
+            bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(balance);
+        },
+        payOffLoan(owedMoney) {
+            loan -= owedMoney;
+            loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
+        }
+    }
+})();
+
+const joesWorkObj = (function(){
+    let payBalance = 0;
+    let salary = 100;
+
+    return {
+        getPayBalance(){
+            return payBalance
+        },
+        getSalary(){
+            return salary;
+        },
+        getPayed() {
+            payBalance += salary;
+            payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
+        },
+        transferedPayBalance() {
+            // Clear pay balance since it has been transfered
+            payBalance = 0;
+            payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
         }
     }
 })();
@@ -46,7 +80,12 @@ const handleLoanButtonClick = e => {
                 alert(`Loan have to be beween 0-${maxLoanValue}.`);
                 handleLoanButtonClick();
             } else {
-                joesBankAccountObj.setLoan(loanAmount);
+                if (Number.isInteger(loanAmount)) {
+                    joesBankAccountObj.setLoan(loanAmount);
+                } else {
+                    alert("Only enter digits.");
+                    handleLoanButtonClick();
+                }
             }
         } else {
             alert("You already have a loan, and need to pay it off before you can get a new one");   
@@ -56,12 +95,47 @@ const handleLoanButtonClick = e => {
     }
 }
 
+const handleBankButtonClick = e => {
+    let balance = joesBankAccountObj.getBalance();
+    let loan = joesBankAccountObj.getLoan();
+    let payBalance = joesWorkObj.getPayBalance();
+
+    if (loan === 0) {
+        // Transfere work salary to bank balance
+        joesBankAccountObj.payJoe(payBalance)
+        joesWorkObj.transferedPayBalance();
+    } else {
+        // If you have an outstanding loan, 10% must go to paying off the loan, the rest goes to bank balance
+        let owedMoney = payBalance / 10;
+        let salaryMoney = payBalance - owedMoney;
+
+        if (loan < owedMoney) {
+            salaryMoney += owedMoney - loan;
+            owedMoney = loan;
+        }
+
+        joesBankAccountObj.payOffLoan(owedMoney)
+        joesBankAccountObj.payJoe(salaryMoney)
+        joesWorkObj.transferedPayBalance();
+
+    }
+}
+
+const handleWorkButtonClick = e => {
+    // Get paid (100)
+    joesWorkObj.getPayed();
+
+}
+
 
 // Event liteners
 loanButtonElement.addEventListener("click", handleLoanButtonClick);
+bankButtonElement.addEventListener("click", handleBankButtonClick);
+workButtonElement.addEventListener("click", handleWorkButtonClick);
 
 
 
 // Set default values
 bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getBalance());
 loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getLoan());
+payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
