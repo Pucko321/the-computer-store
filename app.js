@@ -84,7 +84,6 @@ const handleLoanButtonClick = e => {
                     joesBankAccountObj.setLoan(loanAmount);
                 } else {
                     alert("Only enter digits.");
-                    handleLoanButtonClick();
                 }
             }
         } else {
