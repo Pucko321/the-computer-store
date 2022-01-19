@@ -20,6 +20,23 @@ const buyLaptopElement = document.getElementById("buyLaptop");
 let laptops = [];
 
 
+// Fetch
+fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
+    .then(response => response.json())
+    .then(data => laptops = data)
+    .then(laptops => addLaptopsToMenu(laptops))
+
+const addLaptopsToMenu = (laptops) => {
+    laptops.forEach(laptop => addLaptopToMenu(laptop));
+}
+
+const addLaptopToMenu = (laptop) => {
+    const laptopElement = document.createElement("option");
+    laptopElement.value = laptop.id;
+    laptopElement.appendChild(document.createTextNode(laptop.title));
+    laptopsElement.appendChild(laptopElement);
+}
+
 
 // IIFE Object
 const joesBankAccountObj = (function(){
@@ -78,6 +95,7 @@ const joesWorkObj = (function(){
 
 
 
+// Handle button clicks
 const handleLoanButtonClick = e => {
     // If the user don't have a loan, the user can loan up to x2 of his/her balance
     let balance = joesBankAccountObj.getBalance();
