@@ -28,6 +28,7 @@ fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
 
 const addLaptopsToMenu = (laptops) => {
     laptops.forEach(laptop => addLaptopToMenu(laptop));
+    laptopTitleElement.innerText = laptops[0].title;
 }
 
 const addLaptopToMenu = (laptop) => {
@@ -95,7 +96,7 @@ const joesWorkObj = (function(){
 
 
 
-// Handle button clicks
+// Handle functions
 const handleLoanButtonClick = e => {
     // If the user don't have a loan, the user can loan up to x2 of his/her balance
     let balance = joesBankAccountObj.getBalance();
@@ -156,11 +157,17 @@ const handleWorkButtonClick = e => {
 
 }
 
+const handleLaptopMenuChange = e => {
+    const selectedLaptop = laptops[e.target.selectedIndex];
+    laptopTitleElement.innerText = selectedLaptop.title;
+}
+
 
 // Event liteners
 loanButtonElement.addEventListener("click", handleLoanButtonClick);
 bankButtonElement.addEventListener("click", handleBankButtonClick);
 workButtonElement.addEventListener("click", handleWorkButtonClick);
+laptopsElement.addEventListener("change", handleLaptopMenuChange);
 
 
 
