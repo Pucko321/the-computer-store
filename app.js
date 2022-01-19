@@ -32,7 +32,7 @@ const addLaptopsToMenu = (laptops) => {
     laptopTitleElement.innerText = laptops[0].title;
     laptopDescriptionElement.innerText = laptops[0].description;
     laptopImgElement.src = `https://noroff-komputer-store-api.herokuapp.com/${laptops[0].image}`;
-    laptopPriceElement.innerText = laptops[0].price;
+    laptopPriceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(laptops[0].price);
 }
 
 const addLaptopToMenu = (laptop) => {
@@ -167,7 +167,7 @@ const handleLaptopMenuChange = e => {
     laptopTitleElement.innerText = selectedLaptop.title;
     laptopDescriptionElement.innerText = selectedLaptop.description;
     laptopImgElement.src = `https://noroff-komputer-store-api.herokuapp.com/${selectedLaptop.image}`;
-    laptopPriceElement.innerText = selectedLaptop.price;
+    laptopPriceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(selectedLaptop.price);
 }
 
 
