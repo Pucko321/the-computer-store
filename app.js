@@ -1,12 +1,24 @@
 // Get html elements
+// Bank
 const bankBalanceElement = document.getElementById("bankBalance");
 const loanBalanceElement = document.getElementById("loanBalance");
 const loanButtonElement = document.getElementById("getLoan");
+// Work
 const payBalanceElement = document.getElementById("payBalance");
 const bankButtonElement = document.getElementById("bankPayBalance");
 const workButtonElement = document.getElementById("work");
+// Store
+const laptopsElement = document.getElementById("laptops");
+const laptopSpecsElement = document.getElementById("laptopSpecs");
+const laptopTitleElement = document.getElementById("laptopTitle");
+const laptopDescriptionElement = document.getElementById("laptopDescription");
+const laptopImgElement = document.getElementById("laptopImg");
+const laptopPriceElement = document.getElementById("laptopPrice");
+const buyLaptopElement = document.getElementById("buyLaptop");
 
 // Variables
+let laptops = [];
+
 
 
 // IIFE Object
