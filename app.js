@@ -1,0 +1,67 @@
+// Get html elements
+const bankBalanceElement = document.getElementById("bankBalance");
+const loanBalanceElement = document.getElementById("loanBalance");
+const loanButtonElement = document.getElementById("getLoan");
+
+// Variables
+
+
+// IIFE Object
+const joesBankAccountObj = (function(){
+    let balance = 10;
+    let loan = 0;
+
+    return {
+        getBalance(){
+            return balance
+        },
+        getLoan(){
+            return loan
+        },
+        getX: function(){
+            console.log(loan);
+        },
+        setLoan(loanAmount){
+            balance += loanAmount;
+            loan = loanAmount;
+            bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(balance);
+            loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
+        }
+    }
+})();
+
+
+
+const handleLoanButtonClick = e => {
+    // If the user don't have a loan, the user can loan up to x2 of his/her balance
+    let balance = joesBankAccountObj.getBalance();
+    let loan = joesBankAccountObj.getLoan();
+    let maxLoanValue = balance * 2;
+
+    if (balance > 0){
+        if (loan === 0) {
+            const loanAmount = parseInt(window.prompt("How much do you wish to loan?", ""));
+    
+            if(loanAmount < 0 || loanAmount > maxLoanValue){
+                alert(`Loan have to be beween 0-${maxLoanValue}.`);
+                handleLoanButtonClick();
+            } else {
+                joesBankAccountObj.setLoan(loanAmount);
+            }
+        } else {
+            alert("You already have a loan, and need to pay it off before you can get a new one");   
+        }
+    } else {
+        alert("You can't get a loan without capital");
+    }
+}
+
+
+// Event liteners
+loanButtonElement.addEventListener("click", handleLoanButtonClick);
+
+
+
+// Set default values
+bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getBalance());
+loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getLoan());
