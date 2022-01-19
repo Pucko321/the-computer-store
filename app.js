@@ -7,7 +7,7 @@ const bankButtonElement = document.getElementById("bankPayBalance");
 const workButtonElement = document.getElementById("work");
 
 // Variables
-let payBalance = 0;
+
 
 // IIFE Object
 const joesBankAccountObj = (function(){
@@ -37,6 +37,24 @@ const joesBankAccountObj = (function(){
         payOffLoan(owedMoney) {
             loan -= owedMoney;
             loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(loan);
+        }
+    }
+})();
+
+const joesWorkObj = (function(){
+    let payBalance = 0;
+    let salary = 100;
+
+    return {
+        getPayBalance(){
+            return payBalance
+        },
+        getSalary(){
+            return salary;
+        },
+        getPayed() {
+            payBalance += salary;
+            payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
         }
     }
 })();
@@ -73,16 +91,15 @@ const handleBankButtonClick = e => {
     let loan = joesBankAccountObj.getLoan();
 
     if (loan === 0) {
-        joesBankAccountObj.payJoe(payBalance)
+        joesBankAccountObj.payJoe(joesWorkObj.getPayBalance())
     } else {
-        joesBankAccountObj.payOffLoan(payBalance)
+        joesBankAccountObj.payOffLoan(joesWorkObj.getPayBalance())
     }
 }
 
 const handleWorkButtonClick = e => {
     // Get paid (100)
-    payBalance += 100;
-    payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(payBalance);
+    joesWorkObj.getPayed();
 
 }
 
@@ -97,4 +114,4 @@ workButtonElement.addEventListener("click", handleWorkButtonClick);
 // Set default values
 bankBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getBalance());
 loanBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesBankAccountObj.getLoan());
-payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(payBalance);
+payBalanceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(joesWorkObj.getPayBalance());
