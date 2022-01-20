@@ -1,12 +1,46 @@
 // Get html elements
+// Bank
 const bankBalanceElement = document.getElementById("bankBalance");
 const loanBalanceElement = document.getElementById("loanBalance");
 const loanButtonElement = document.getElementById("getLoan");
+// Work
 const payBalanceElement = document.getElementById("payBalance");
 const bankButtonElement = document.getElementById("bankPayBalance");
 const workButtonElement = document.getElementById("work");
+// Store
+const laptopsElement = document.getElementById("laptops");
+const laptopSpecsElement = document.getElementById("laptopSpecs");
+const laptopTitleElement = document.getElementById("laptopTitle");
+const laptopDescriptionElement = document.getElementById("laptopDescription");
+const laptopImgElement = document.getElementById("laptopImg");
+const laptopPriceElement = document.getElementById("laptopPrice");
+const buyLaptopElement = document.getElementById("buyLaptop");
 
 // Variables
+let laptops = [];
+
+
+// Fetch
+fetch("https://noroff-komputer-store-api.herokuapp.com/computers")
+    .then(response => response.json())
+    .then(data => laptops = data)
+    .then(laptops => addLaptopsToMenu(laptops))
+
+const addLaptopsToMenu = (laptops) => {
+    laptops.forEach(laptop => addLaptopToMenu(laptop));
+    laptopSpecsElement.innerText = laptops[0].specs;
+    laptopTitleElement.innerText = laptops[0].title;
+    laptopDescriptionElement.innerText = laptops[0].description;
+    laptopImgElement.src = `https://noroff-komputer-store-api.herokuapp.com/${laptops[0].image}`;
+    laptopPriceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(laptops[0].price);
+}
+
+const addLaptopToMenu = (laptop) => {
+    const laptopElement = document.createElement("option");
+    laptopElement.value = laptop.id;
+    laptopElement.appendChild(document.createTextNode(laptop.title));
+    laptopsElement.appendChild(laptopElement);
+}
 
 
 // IIFE Object
@@ -66,6 +100,7 @@ const joesWorkObj = (function(){
 
 
 
+// Handle functions
 const handleLoanButtonClick = e => {
     // If the user don't have a loan, the user can loan up to x2 of his/her balance
     let balance = joesBankAccountObj.getBalance();
@@ -84,7 +119,6 @@ const handleLoanButtonClick = e => {
                     joesBankAccountObj.setLoan(loanAmount);
                 } else {
                     alert("Only enter digits.");
-                    handleLoanButtonClick();
                 }
             }
         } else {
@@ -127,11 +161,21 @@ const handleWorkButtonClick = e => {
 
 }
 
+const handleLaptopMenuChange = e => {
+    const selectedLaptop = laptops[e.target.selectedIndex];
+    laptopSpecsElement.innerText = selectedLaptop.specs;
+    laptopTitleElement.innerText = selectedLaptop.title;
+    laptopDescriptionElement.innerText = selectedLaptop.description;
+    laptopImgElement.src = `https://noroff-komputer-store-api.herokuapp.com/${selectedLaptop.image}`;
+    laptopPriceElement.innerText = Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' }).format(selectedLaptop.price);
+}
+
 
 // Event liteners
 loanButtonElement.addEventListener("click", handleLoanButtonClick);
 bankButtonElement.addEventListener("click", handleBankButtonClick);
 workButtonElement.addEventListener("click", handleWorkButtonClick);
+laptopsElement.addEventListener("change", handleLaptopMenuChange);
 
 
 
